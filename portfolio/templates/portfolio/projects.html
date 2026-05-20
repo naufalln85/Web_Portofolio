@@ -1,0 +1,255 @@
+{% extends 'portfolio/base.html' %}
+
+{% block nav_projects %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+    .projects-section {
+        padding-top: 8rem;
+    }
+
+    /* Filter Buttons */
+    .filter-container {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 4rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        padding: 0.6rem 1.4rem;
+        border-radius: 50px;
+        font-family: var(--font-display);
+        font-weight: 500;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: var(--transition-smooth);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+        border-color: var(--primary);
+        color: var(--primary);
+        background: rgba(var(--primary-rgb), 0.05);
+        transform: translateY(-2px);
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2.5rem;
+        transition: var(--transition-smooth);
+    }
+
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        padding: 0;
+        transition: var(--transition-bounce);
+    }
+
+    /* Keep items inside card uniform */
+    .project-img-container {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .project-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-smooth);
+    }
+
+    .project-card:hover .project-img {
+        transform: scale(1.08) rotate(1deg);
+    }
+
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(11, 15, 25, 0.4);
+        opacity: 0;
+        transition: var(--transition-smooth);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+
+    .project-body {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .project-cat {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+    }
+
+    .project-title {
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        margin-bottom: 0.8rem;
+    }
+
+    .project-desc {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .project-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .project-links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .project-link-btn {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .project-link-btn:hover {
+        color: var(--primary);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container projects-section">
+    <div class="section-header">
+        <span class="section-tag">Portofolio</span>
+        <h2 class="section-title">Koleksi Project</h2>
+        <p class="section-subtitle">Kumpulan project digital yang pernah saya kembangkan dari ide hingga rilis.</p>
+    </div>
+
+    <!-- Category filter buttons driven by client JS for static compatibility -->
+    <div class="filter-container">
+        <button class="filter-btn active" data-filter="all">Semua Project</button>
+        {% for cat_key, cat_name in categories %}
+            <button class="filter-btn" data-filter="{{ cat_key }}">{{ cat_name }}</button>
+        {% endfor %}
+    </div>
+
+    <!-- Grid Layout -->
+    <div class="projects-grid" id="projects-grid">
+        {% if projects %}
+            {% for project in projects %}
+                <div class="glass-card project-card" data-category="{{ project.category }}">
+                    <div class="project-img-container">
+                        {% if project.thumbnail %}
+                            <img src="{% if is_static %}{{ url_prefix }}media/{{ project.thumbnail }}{% else %}{{ project.thumbnail.url }}{% endif %}" alt="{{ project.title }}" class="project-img">
+                        {% else %}
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800" alt="Project image placeholder" class="project-img">
+                        {% endif %}
+                        <div class="project-overlay">
+                            <a href="{% if is_static %}{{ url_prefix }}projects/{{ project.pk }}.html{% else %}{% url 'project_detail' project.pk %}{% endif %}" class="btn-cta">
+                                Detail Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="project-body">
+                        <span class="project-cat">{{ project.get_category_display }}</span>
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <p class="project-desc">{{ project.description|truncatewords:22 }}</p>
+                        
+                        <div class="project-tech">
+                            {% for tech in project.tech_list %}
+                                <span class="badge-tech">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="project-links">
+                            {% if project.repo_url %}
+                                <a href="{{ project.repo_url }}" target="_blank" class="project-link-btn">
+                                    <i class="fa-brands fa-github"></i> Repo
+                                </a>
+                            {% endif %}
+                            {% if project.live_url %}
+                                <a href="{{ project.live_url }}" target="_blank" class="project-link-btn" style="color:var(--primary)">
+                                    <i class="fa-solid fa-globe"></i> Demo
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="glass-card" style="grid-column:1 / -1; text-align:center; padding:4rem">
+                <i class="fa-regular fa-folder" style="font-size:3rem; color:var(--text-muted); margin-bottom:1rem"></i>
+                <p style="color:var(--text-muted)">Belum ada project yang ditambahkan di database.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Client-side category filtering logic (safe for static HTML generation)
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active classes
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const filterValue = btn.getAttribute('data-filter');
+            
+            projectCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                
+                if (filterValue === 'all' || category === filterValue) {
+                    card.style.display = 'flex';
+                    // Animation trigger
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'scale(1)';
+                    }, 50);
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

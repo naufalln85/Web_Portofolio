@@ -1,0 +1,499 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block nav_home %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section Styles */
+    .hero {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-top: 6rem;
+    }
+
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .hero-content {
+        z-index: 2;
+    }
+
+    .hero-intro {
+        font-size: 1.1rem;
+        color: var(--primary);
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .hero-intro::after {
+        content: '';
+        width: 60px;
+        height: 2px;
+        background: var(--primary);
+        display: inline-block;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-title span {
+        background: var(--gradient-text);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        font-size: 2rem;
+        font-family: var(--font-display);
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        height: 2.8rem; /* Prevents layout shifting during typing */
+    }
+
+    .hero-description {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        max-width: 580px;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+    }
+
+    .hero-image-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-image-glow {
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: var(--primary);
+        filter: blur(80px);
+        opacity: 0.15;
+        z-index: 1;
+        animation: pulse-glow 8s infinite alternate;
+    }
+
+    .hero-avatar-frame {
+        width: 320px;
+        height: 320px;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.05);
+        box-shadow: var(--shadow-premium);
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.02);
+        transition: var(--transition-bounce);
+        animation: morph-shape 20s infinite alternate ease-in-out;
+    }
+
+    .hero-avatar-frame:hover {
+        border-color: var(--primary);
+        box-shadow: 0 0 40px rgba(var(--primary-rgb), 0.2);
+    }
+
+    .hero-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Featured Projects Grid */
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .project-img-container {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .project-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-smooth);
+    }
+
+    .project-card:hover .project-img {
+        transform: scale(1.08) rotate(1deg);
+    }
+
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(11, 15, 25, 0.4);
+        opacity: 0;
+        transition: var(--transition-smooth);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+
+    .project-body {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .project-cat {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+    }
+
+    .project-title {
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        margin-bottom: 0.8rem;
+    }
+
+    .project-desc {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .project-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .project-links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .project-link-btn {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .project-link-btn:hover {
+        color: var(--primary);
+    }
+
+    /* Certificates CSS Grid */
+    .certs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .cert-card {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cert-img-container {
+        height: 160px;
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+    }
+
+    .cert-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-smooth);
+    }
+
+    .cert-card:hover .cert-img {
+        transform: scale(1.05);
+    }
+
+    .cert-title {
+        font-size: 1.1rem;
+        color: var(--text-primary);
+    }
+
+    .cert-meta {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Keyframes */
+    @keyframes pulse-glow {
+        0% { transform: scale(1); opacity: 0.12; }
+        100% { transform: scale(1.15); opacity: 0.20; }
+    }
+
+    @keyframes morph-shape {
+        0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        50% { border-radius: 65% 35% 55% 45% / 40% 55% 45% 60%; }
+        100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .hero {
+            padding-top: 8rem;
+            min-height: auto;
+        }
+        .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            text-align: center;
+        }
+        .hero-intro {
+            justify-content: center;
+        }
+        .hero-intro::after {
+            display: none;
+        }
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        .hero-description {
+            margin: 0 auto 2rem auto;
+        }
+        .hero-actions {
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-content">
+            <div class="hero-intro">Hello World, saya</div>
+            <h1 class="hero-title">
+                <span>{% if profile %}{{ profile.name }}{% else %}Developer Handal{% endif %}</span>
+            </h1>
+            <div class="hero-subtitle" id="typed-subtitle"></div>
+            
+            <p class="hero-description">
+                {% if profile %}{{ profile.tagline }}{% else %}Saya mendesain dan membangun aplikasi web berkinerja tinggi, responsif, dan interaktif dengan Django & Postgres.{% endif %}
+            </p>
+            
+            <div class="hero-actions">
+                <a href="{% if is_static %}{{ url_prefix }}projects.html{% else %}{% url 'projects' %}{% endif %}" class="btn-cta" style="padding: 0.8rem 2rem; font-size: 1rem">
+                    <i class="fa-regular fa-folder-open" style="margin-right:0.5rem"></i> Lihat Project
+                </a>
+                
+                {% if profile.cv_file %}
+                    <a href="{% if is_static %}{{ url_prefix }}media/{{ profile.cv_file }}{% else %}{{ profile.cv_file.url }}{% endif %}" class="btn-outline" download style="padding: 0.8rem 2rem; font-size: 1rem">
+                        <i class="fa-solid fa-download"></i> Unduh CV (PDF)
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="hero-image-wrapper">
+            <div class="hero-image-glow"></div>
+            <div class="hero-avatar-frame">
+                {% if profile.photo %}
+                    <img src="{% if is_static %}{{ url_prefix }}media/{{ profile.photo }}{% else %}{{ profile.photo.url }}{% endif %}" alt="Avatar" class="hero-avatar">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Default Avatar" class="hero-avatar">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED PROJECTS SECTION -->
+<section style="background: rgba(255, 255, 255, 0.01); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color)">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Portofolio</span>
+            <h2 class="section-title">Project Unggulan</h2>
+            <p class="section-subtitle">Berikut adalah beberapa project terbaik yang baru-baru ini saya selesaikan dengan arsitektur modern.</p>
+        </div>
+        
+        <div class="featured-grid">
+            {% if featured_projects %}
+                {% for project in featured_projects %}
+                    <div class="glass-card project-card">
+                        <div class="project-img-container">
+                            {% if project.thumbnail %}
+                                <img src="{% if is_static %}{{ url_prefix }}media/{{ project.thumbnail }}{% else %}{{ project.thumbnail.url }}{% endif %}" alt="{{ project.title }}" class="project-img">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800" alt="Placeholder Image" class="project-img">
+                            {% endif %}
+                            <div class="project-overlay">
+                                <a href="{% if is_static %}{{ url_prefix }}projects/{{ project.pk }}.html{% else %}{% url 'project_detail' project.pk %}{% endif %}" class="btn-cta">
+                                    Detail Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-body">
+                            <span class="project-cat">{{ project.get_category_display }}</span>
+                            <h3 class="project-title">{{ project.title }}</h3>
+                            <p class="project-desc">{{ project.description|truncatewords:20 }}</p>
+                            
+                            <div class="project-tech">
+                                {% for tech in project.tech_list %}
+                                    <span class="badge-tech">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="project-links">
+                                {% if project.repo_url %}
+                                    <a href="{{ project.repo_url }}" target="_blank" class="project-link-btn">
+                                        <i class="fa-brands fa-github"></i> Repository
+                                    </a>
+                                {% endif %}
+                                {% if project.live_url %}
+                                    <a href="{{ project.live_url }}" target="_blank" class="project-link-btn" style="color:var(--primary)">
+                                        <i class="fa-solid fa-globe"></i> Live Demo
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="glass-card" style="grid-column: 1 / -1; text-align:center; padding:4rem">
+                    <i class="fa-regular fa-folder" style="font-size:3rem; color:var(--text-muted); margin-bottom:1rem"></i>
+                    <p style="color: var(--text-muted)">Belum ada project unggulan. Tambahkan project di admin panel dan centang 'Featured'!</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div style="text-align: center; margin-top: 4rem">
+            <a href="{% if is_static %}{{ url_prefix }}projects.html{% else %}{% url 'projects' %}{% endif %}" class="btn-outline">
+                Lihat Semua Project <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CERTIFICATES SECTION -->
+<section>
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Kredensial</span>
+            <h2 class="section-title">Sertifikasi Profesional</h2>
+            <p class="section-subtitle">Sertifikat validasi kompetensi yang telah saya raih secara global.</p>
+        </div>
+        
+        <div class="certs-grid">
+            {% if certificates %}
+                {% for cert in certificates %}
+                    <div class="glass-card cert-card">
+                        <div class="cert-img-container">
+                            {% if cert.image %}
+                                <img src="{% if is_static %}{{ url_prefix }}media/{{ cert.image }}{% else %}{{ cert.image.url }}{% endif %}" alt="{{ cert.title }}" class="cert-img">
+                            {% else %}
+                                <img src="https://images.unsplash.com/photo-1589330273594-fade1ee91647?auto=format&fit=crop&q=80&w=800" alt="Cert Placeholder" class="cert-img">
+                            {% endif %}
+                        </div>
+                        <h3 class="cert-title">{{ cert.title }}</h3>
+                        <div class="cert-meta">
+                            <span style="font-weight:600; color:var(--text-secondary)">{{ cert.issuer }}</span>
+                            <span>{{ cert.date_issued|date:"M Y" }}</span>
+                        </div>
+                        {% if cert.credential_url %}
+                            <a href="{{ cert.credential_url }}" target="_blank" class="btn-outline" style="padding:0.4rem 1rem; border-radius:8px; justify-content:center; font-size:0.85rem">
+                                Verifikasi Kredensial <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="glass-card" style="grid-column: 1 / -1; text-align:center; padding:4rem">
+                    <i class="fa-solid fa-award" style="font-size:3rem; color:var(--text-muted); margin-bottom:1rem"></i>
+                    <p style="color: var(--text-muted)">Belum ada sertifikasi yang ditambahkan.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Premium Typewriter script for Hero Subtitle
+    const titleText = "{% if profile %}{{ profile.title }}{% else %}Software Architect / Fullstack Developer{% endif %}";
+    const subtitleEl = document.getElementById('typed-subtitle');
+    let index = 0;
+    
+    function typeEffect() {
+        if (index < titleText.length) {
+            subtitleEl.innerHTML += titleText.charAt(index);
+            index++;
+            setTimeout(typeEffect, 75);
+        } else {
+            // Add elegant custom cursor pulsation
+            subtitleEl.innerHTML += '<span style="color:var(--primary); animation: blink 1s infinite">|</span>';
+        }
+    }
+    
+    // Keyframe blinking cursor injected dynamically
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Trigger animation slightly after DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(typeEffect, 500);
+    });
+</script>
+{% endblock %}

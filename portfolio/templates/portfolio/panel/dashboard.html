@@ -1,0 +1,391 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<style>
+    .cms-container {
+        padding-top: 8rem;
+        min-height: 80vh;
+    }
+
+    .cms-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1.5rem;
+    }
+
+    .cms-title-area h2 {
+        font-size: 2.2rem;
+        background: var(--gradient-text);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .cms-title-area p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        margin-top: 0.4rem;
+    }
+
+    .btn-cms-nav {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
+        padding: 0.6rem 1.2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .btn-cms-nav:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    /* Message Alerts */
+    .alerts-container {
+        margin-bottom: 2.5rem;
+    }
+
+    .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border: 1px solid transparent;
+    }
+
+    .alert-success {
+        background: rgba(0, 201, 120, 0.08);
+        border-color: rgba(0, 201, 120, 0.2);
+        color: #00C978;
+    }
+
+    .alert-error, .alert-danger {
+        background: rgba(239, 68, 68, 0.08);
+        border-color: rgba(239, 68, 68, 0.2);
+        color: #EF4444;
+    }
+
+    /* Grid Layout */
+    .cms-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 3rem;
+    }
+
+    /* Stats Cards */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 120px;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--primary);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-weight: 600;
+    }
+
+    /* Actions Panel Card */
+    .action-card {
+        padding: 2.5rem;
+        border-radius: 20px;
+        text-align: center;
+        height: fit-content;
+    }
+
+    .btn-publish {
+        background: var(--primary);
+        color: var(--bg-dark) !important;
+        border: 1px solid var(--primary);
+        font-family: var(--font-display);
+        font-weight: 700;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        box-shadow: var(--shadow-glow);
+        transition: var(--transition-smooth);
+        margin: 1.5rem 0;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .btn-publish:hover {
+        background: transparent;
+        color: var(--primary) !important;
+        box-shadow: none;
+        transform: translateY(-3px);
+    }
+
+    /* Quick Links Table */
+    .content-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        font-size: 0.95rem;
+    }
+
+    .content-table th {
+        text-align: left;
+        color: var(--text-muted);
+        font-weight: 600;
+        padding: 0.8rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .content-table td {
+        padding: 1.2rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--text-secondary);
+    }
+
+    .content-table tr:hover td {
+        background: rgba(255, 255, 255, 0.01);
+        color: var(--text-primary);
+    }
+
+    .quick-link-actions {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    .btn-quick-action {
+        font-size: 0.82rem;
+        padding: 0.35rem 0.8rem;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        font-weight: 600;
+    }
+
+    .btn-quick-action:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+
+    @media (max-width: 991px) {
+        .cms-grid {
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+        .stats-container {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+</style>
+
+<div class="container cms-container">
+    
+    <!-- HEADER -->
+    <div class="cms-header">
+        <div class="cms-title-area">
+            <h2>CMS Dashboard</h2>
+            <p>Kelola konten portofolio Anda secara dinamis dari satu panel kontrol.</p>
+        </div>
+        
+        <div style="display:flex; gap:1rem">
+            <a href="{% url 'panel_settings' %}" class="btn-cms-nav" style="background: rgba(var(--primary-rgb), 0.05); border-color: rgba(var(--primary-rgb), 0.2); color: var(--primary)">
+                <i class="fa-solid fa-sliders"></i> Pengaturan Web
+            </a>
+            <a href="/admin/" target="_blank" class="btn-cms-nav">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Django Admin default <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.75rem"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- MESSAGES -->
+    {% if messages %}
+        <div class="alerts-container">
+            {% for msg in messages %}
+                <div class="alert alert-{% if msg.tags == 'error' %}danger{% else %}{{ msg.tags }}{% endif %}">
+                    {% if msg.tags == 'success' %}
+                        <i class="fa-regular fa-circle-check"></i>
+                    {% else %}
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    {% endif %}
+                    {{ msg }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- CMS GRID -->
+    <div class="cms-grid">
+        
+        <!-- LEFT COLUMN: STATS & CONTENT MANAGEMENT -->
+        <div>
+            <!-- Stats -->
+            <div class="stats-container">
+                <div class="glass-card stat-card">
+                    <span class="stat-number">{{ projects_count }}</span>
+                    <span class="stat-label">Project</span>
+                </div>
+                <div class="glass-card stat-card">
+                    <span class="stat-number">{{ certs_count }}</span>
+                    <span class="stat-label">Sertifikat</span>
+                </div>
+                <div class="glass-card stat-card">
+                    <span class="stat-number">{{ skills_count }}</span>
+                    <span class="stat-label">Skill</span>
+                </div>
+            </div>
+
+            <!-- Content tables Quick Links -->
+            <div class="glass-card" style="padding: 2rem">
+                <h3 style="margin-bottom:1.5rem; font-size:1.25rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem">
+                    <i class="fa-regular fa-folder-open" style="color:var(--primary); margin-right:0.5rem"></i> Manajemen Konten Cepat
+                </h3>
+                
+                <table class="content-table">
+                    <thead>
+                        <tr>
+                            <th>Model Konten</th>
+                            <th>Jumlah Item</th>
+                            <th style="text-align: right">Aksi CRUD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Projek Portofolio</strong></td>
+                            <td>{{ projects_count }} item</td>
+                            <td>
+                                <div class="quick-link-actions" style="justify-content: flex-end">
+                                    <a href="/admin/portfolio/project/add/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-plus"></i> Tambah</a>
+                                    <a href="/admin/portfolio/project/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Kelola</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sertifikat Kompetensi</strong></td>
+                            <td>{{ certs_count }} item</td>
+                            <td>
+                                <div class="quick-link-actions" style="justify-content: flex-end">
+                                    <a href="/admin/portfolio/certificate/add/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-plus"></i> Tambah</a>
+                                    <a href="/admin/portfolio/certificate/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Kelola</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Keahlian (Skills)</strong></td>
+                            <td>{{ skills_count }} item</td>
+                            <td>
+                                <div class="quick-link-actions" style="justify-content: flex-end">
+                                    <a href="/admin/portfolio/skill/add/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-plus"></i> Tambah</a>
+                                    <a href="/admin/portfolio/skill/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Kelola</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pengalaman Kerja</strong></td>
+                            <td>{{ exp_count }} item</td>
+                            <td>
+                                <div class="quick-link-actions" style="justify-content: flex-end">
+                                    <a href="/admin/portfolio/workexperience/add/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-plus"></i> Tambah</a>
+                                    <a href="/admin/portfolio/workexperience/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Kelola</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Riwayat Pendidikan</strong></td>
+                            <td>{{ edu_count }} item</td>
+                            <td>
+                                <div class="quick-link-actions" style="justify-content: flex-end">
+                                    <a href="/admin/portfolio/education/add/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-plus"></i> Tambah</a>
+                                    <a href="/admin/portfolio/education/" class="btn-quick-action" target="_blank"><i class="fa-solid fa-pen-to-square"></i> Kelola</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: AUTO-PUBLISH CONTROLLER -->
+        <div>
+            <div class="glass-card action-card">
+                <i class="fa-solid fa-cloud-arrow-up" style="font-size:3.5rem; color:var(--primary); margin-bottom:1rem"></i>
+                <h3 style="font-size:1.4rem; color:var(--text-primary); margin-bottom:0.5rem">GitHub Pages Auto-Publish</h3>
+                <p style="color:var(--text-muted); font-size:0.92rem; line-height:1.6">
+                    Setiap kali Anda merubah data atau profil, klik tombol di bawah untuk mengekspor halaman website ke HTML statis secara otomatis dan melakukan sinkronisasi instan ke cabang GitHub Pages.
+                </p>
+                
+                <form method="POST" action="{% url 'publish' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-publish" id="publish-btn">
+                        <i class="fa-solid fa-rocket"></i> Publish ke GitHub Pages
+                    </button>
+                </form>
+                
+                <div style="border-top: 1px solid var(--border-color); padding-top:1.5rem; margin-top: 0.5rem; text-align: left; font-size: 0.85rem">
+                    <h4 style="color:var(--text-primary); margin-bottom:0.6rem">Status Sistem Sinkronisasi:</h4>
+                    <div style="display:flex; flex-direction:column; gap:0.4rem; color:var(--text-secondary)">
+                        <div style="display:flex; justify-content:space-between">
+                            <span>Koneksi Engine:</span>
+                            <span style="color:#00C978; font-weight:600"><i class="fa-solid fa-circle-check"></i> Siap</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between">
+                            <span>Situs Publik:</span>
+                            <span>github.io/portfolio</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Spinner effect on publish button click to show loading activity
+    const publishBtn = document.getElementById('publish-btn');
+    if (publishBtn) {
+        publishBtn.addEventListener('click', () => {
+            const form = publishBtn.closest('form');
+            if (form) {
+                // Change UI status to loading
+                publishBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses Sinkronisasi...';
+                publishBtn.style.opacity = '0.8';
+                publishBtn.style.pointerEvents = 'none';
+            }
+        });
+    }
+</script>
+{% endblock %}

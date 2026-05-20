@@ -1,0 +1,299 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+<style>
+    .settings-container {
+        padding-top: 8rem;
+        max-width: 800px;
+        margin: 0 auto;
+        min-height: 80vh;
+    }
+
+    .settings-header {
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1.5rem;
+        margin-bottom: 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .settings-header h2 {
+        font-size: 2.2rem;
+        background: var(--gradient-text);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* Form Styles */
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+        margin-bottom: 0.6rem;
+    }
+
+    .form-control {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 0.8rem 1.2rem;
+        border-radius: 10px;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        transition: var(--transition-smooth);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+        background: rgba(255, 255, 255, 0.04);
+        box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.1);
+    }
+
+    .form-control::placeholder {
+        color: var(--text-muted);
+    }
+
+    /* File field modifications */
+    .form-control-file {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-top: 0.4rem;
+    }
+
+    .help-text {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-top: 0.4rem;
+        display: block;
+    }
+
+    /* Live Color Picker block */
+    .color-picker-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .color-picker-input {
+        width: 60px;
+        height: 60px;
+        padding: 0;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        background: none;
+    }
+
+    .color-preview-block {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--primary);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: var(--shadow-glow);
+    }
+
+    .form-actions {
+        border-top: 1px solid var(--border-color);
+        padding-top: 2rem;
+        margin-top: 3rem;
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    .btn-save {
+        background: var(--primary);
+        color: var(--bg-dark) !important;
+        border: 1px solid var(--primary);
+        font-family: var(--font-display);
+        font-weight: 700;
+        padding: 0.8rem 2.2rem;
+        border-radius: 50px;
+        font-size: 1rem;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: var(--shadow-glow);
+        transition: var(--transition-smooth);
+    }
+
+    .btn-save:hover {
+        background: transparent;
+        color: var(--primary) !important;
+        transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+        border: 1px solid var(--border-color);
+        padding: 0.8rem 2.2rem;
+        border-radius: 50px;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 1rem;
+        background: transparent;
+        color: var(--text-secondary);
+    }
+
+    .btn-cancel:hover {
+        border-color: #EF4444;
+        color: #EF4444;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="container settings-container">
+    
+    <!-- HEADER -->
+    <div class="settings-header">
+        <div>
+            <h2>Pengaturan Situs</h2>
+            <p style="color:var(--text-muted); font-size:0.92rem; margin-top:0.4rem">Modifikasi metadata portfolio, data pribadi, tautan sosial, dan skema warna tema.</p>
+        </div>
+        <a href="{% url 'panel_dashboard' %}" class="btn-cancel" style="padding:0.5rem 1.2rem; font-size:0.85rem">
+            <i class="fa-solid fa-chevron-left"></i> Kembali
+        </a>
+    </div>
+
+    <!-- SETTINGS FORM -->
+    <div class="glass-card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">Nama Lengkap</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <span class="help-text" style="color:#EF4444">{{ form.name.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">Pekerjaan / Jabatan Profesional</label>
+                {{ form.title }}
+                <span class="help-text">Tampil di hero sub-heading depan. Contoh: Fullstack Developer | Web Engineer</span>
+                {% if form.title.errors %}
+                    <span class="help-text" style="color:#EF4444">{{ form.title.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.tagline.id_for_label }}">Slogan Ringkas (Tagline)</label>
+                {{ form.tagline }}
+                <span class="help-text">Slogan utama yang menarik di hero section utama.</span>
+                {% if form.tagline.errors %}
+                    <span class="help-text" style="color:#EF4444">{{ form.tagline.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.bio.id_for_label }}">Biografi Lengkap</label>
+                {{ form.bio }}
+                <span class="help-text">Teks deskripsi diri yang akan diletakkan di halaman "Tentang Saya". Mendukung paragraf.</span>
+                {% if form.bio.errors %}
+                    <span class="help-text" style="color:#EF4444">{{ form.bio.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem">
+                <div class="form-group">
+                    <label for="{{ form.photo.id_for_label }}">Foto Profil</label>
+                    {{ form.photo }}
+                    <span class="help-text">Direkomendasikan foto portrait/square (Rasio 1:1) berkualitas tinggi.</span>
+                    {% if form.photo.errors %}
+                        <span class="help-text" style="color:#EF4444">{{ form.photo.errors }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.cv_file.id_for_label }}">Berkas CV / Resume (PDF)</label>
+                    {{ form.cv_file }}
+                    <span class="help-text">CV terbarumu agar pengunjung dapat langsung mengunduh berkasnya.</span>
+                    {% if form.cv_file.errors %}
+                        <span class="help-text" style="color:#EF4444">{{ form.cv_file.errors }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Alamat Email Kontak</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <span class="help-text" style="color:#EF4444">{{ form.email.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem">
+                <div class="form-group">
+                    <label for="{{ form.github_url.id_for_label }}">Tautan Github</label>
+                    {{ form.github_url }}
+                    {% if form.github_url.errors %}
+                        <span class="help-text" style="color:#EF4444">{{ form.github_url.errors }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.linkedin_url.id_for_label }}">Tautan LinkedIn</label>
+                    {{ form.linkedin_url }}
+                    {% if form.linkedin_url.errors %}
+                        <span class="help-text" style="color:#EF4444">{{ form.linkedin_url.errors }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Accent theme color dynamic controls -->
+            <div class="form-group" style="background:rgba(255,255,255,0.01); padding:1.5rem; border-radius:12px; border:1px solid var(--border-color)">
+                <label for="{{ form.accent_color.id_for_label }}">Skema Warna Utama (Warna Aksen)</label>
+                <div class="color-picker-wrapper">
+                    {{ form.accent_color }}
+                    <div style="display:flex; flex-direction:column; gap:0.2rem">
+                        <span style="font-weight:600; color:var(--text-primary)">Sesuaikan Warna Aksen</span>
+                        <span class="help-text" style="margin:0">Setiap perubahan akan langsung merubah aksen warna tombol, borders, dan navigasi di seluruh portofolio publik!</span>
+                    </div>
+                </div>
+                {% if form.accent_color.errors %}
+                    <span class="help-text" style="color:#EF4444">{{ form.accent_color.errors }}</span>
+                {% endif %}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-save">
+                    <i class="fa-regular fa-floppy-disk"></i> Simpan Perubahan
+                </button>
+                <a href="{% url 'panel_dashboard' %}" class="btn-cancel" style="display:inline-flex; align-items:center; justify-content:center">
+                    Batal
+                </a>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script>
+    // Live UI color update for instant feedback when dragging the color picker
+    const picker = document.querySelector('.color-picker-input');
+    if (picker) {
+        picker.addEventListener('input', (e) => {
+            const hex = e.target.value;
+            // Instantly update CSS variables of the page so they can preview the accent colors
+            document.documentElement.style.setProperty('--primary', hex);
+            
+            // Generate temporary RGB for the glows
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            document.documentElement.style.setProperty('--primary-rgb', `${r}, ${g}, ${b}`);
+        });
+    }
+</script>
+{% endblock %}
