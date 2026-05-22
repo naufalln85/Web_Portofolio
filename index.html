@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naufal Maulana Hasan | Portfolio</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Accent color loaded dynamically from Profile model, fallback to a vibrant electric teal */
+            --primary: #007bc7;
+            --primary-rgb: #007bc7;
+            
+            --bg-dark: #070913;
+            --bg-body: #0b0f19;
+            --bg-card: rgba(22, 28, 45, 0.6);
+            --bg-card-hover: rgba(30, 39, 63, 0.85);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            
+            --gradient-text: linear-gradient(135deg, #ffffff 30%, var(--primary) 100%);
+            --gradient-card: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            --shadow-premium: 0 20px 40px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 25px rgba(0, 201, 120, 0.15);
+        }
+
+        /* Basic Resets & Scrollbars */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(11, 15, 25, 0.95) 0%, rgba(7, 9, 19, 0.98) 100%),
+                radial-gradient(circle at top right, rgba(var(--primary-rgb), 0.08) 0%, transparent 40%),
+                radial-gradient(circle at bottom left, rgba(13, 148, 136, 0.05) 0%, transparent 35%);
+            background-attachment: fixed;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            border: 2px solid var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-display);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        /* Navigation Layout */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.25rem 0;
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            background: rgba(7, 9, 19, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.8rem 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .navbar-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-family: var(--font-display);
+            font-weight: 800;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--primary);
+            -webkit-text-fill-color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2.2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            color: var(--text-secondary);
+            position: relative;
+            padding: 0.3rem 0;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .btn-cta {
+            background: var(--primary);
+            color: var(--bg-dark) !important;
+            font-family: var(--font-display);
+            font-weight: 600;
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            border: 1px solid var(--primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-cta:hover {
+            background: transparent;
+            color: var(--primary) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Glassmorphism Card Style */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: var(--transition-smooth);
+            background-image: var(--gradient-card);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-hover);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Section layout */
+        section {
+            padding: 8rem 0 4rem 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 1rem auto 0 auto;
+            font-size: 1.05rem;
+        }
+
+        /* Buttons & Badges */
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            padding: 0.7rem 1.6rem;
+            border-radius: 50px;
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            background: rgba(var(--primary-rgb), 0.03);
+        }
+
+        .badge-tech {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            font-weight: 500;
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-dark);
+            border-top: 1px solid var(--border-color);
+            padding: 4rem 0 2rem 0;
+            margin-top: 6rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-desc {
+            max-width: 350px;
+            margin-top: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-title {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-socials a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.05);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Media Queries */
+        @media (max-width: 991px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 6rem 0 3rem 0;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 75%;
+                height: 100vh;
+                background: rgba(7, 9, 19, 0.96);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2.5rem;
+                transition: 0.4s ease-in-out;
+                border-left: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+                z-index: 1001;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    
+<style>
+    /* Hero Section Styles */
+    .hero {
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        padding-top: 6rem;
+    }
+
+    .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .hero-content {
+        z-index: 2;
+    }
+
+    .hero-intro {
+        font-size: 1.1rem;
+        color: var(--primary);
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    .hero-intro::after {
+        content: '';
+        width: 60px;
+        height: 2px;
+        background: var(--primary);
+        display: inline-block;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-title span {
+        background: var(--gradient-text);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+        font-size: 2rem;
+        font-family: var(--font-display);
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+        height: 2.8rem; /* Prevents layout shifting during typing */
+    }
+
+    .hero-description {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        max-width: 580px;
+    }
+
+    .hero-actions {
+        display: flex;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+    }
+
+    .hero-image-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-image-glow {
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: var(--primary);
+        filter: blur(80px);
+        opacity: 0.15;
+        z-index: 1;
+        animation: pulse-glow 8s infinite alternate;
+    }
+
+    .hero-avatar-frame {
+        width: 320px;
+        height: 320px;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        overflow: hidden;
+        border: 2px solid rgba(255, 255, 255, 0.05);
+        box-shadow: var(--shadow-premium);
+        z-index: 2;
+        background: rgba(255, 255, 255, 0.02);
+        transition: var(--transition-bounce);
+        animation: morph-shape 20s infinite alternate ease-in-out;
+    }
+
+    .hero-avatar-frame:hover {
+        border-color: var(--primary);
+        box-shadow: 0 0 40px rgba(var(--primary-rgb), 0.2);
+    }
+
+    .hero-avatar {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Featured Projects Grid */
+    .featured-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .project-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    .project-img-container {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .project-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-smooth);
+    }
+
+    .project-card:hover .project-img {
+        transform: scale(1.08) rotate(1deg);
+    }
+
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(11, 15, 25, 0.4);
+        opacity: 0;
+        transition: var(--transition-smooth);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+
+    .project-body {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .project-cat {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--primary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+    }
+
+    .project-title {
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        margin-bottom: 0.8rem;
+    }
+
+    .project-desc {
+        color: var(--text-muted);
+        font-size: 0.92rem;
+        margin-bottom: 1.5rem;
+        flex-grow: 1;
+    }
+
+    .project-tech {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .project-links {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .project-link-btn {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .project-link-btn:hover {
+        color: var(--primary);
+    }
+
+    /* Certificates CSS Grid */
+    .certs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    .cert-card {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .cert-img-container {
+        height: 160px;
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+    }
+
+    .cert-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-smooth);
+    }
+
+    .cert-card:hover .cert-img {
+        transform: scale(1.05);
+    }
+
+    .cert-title {
+        font-size: 1.1rem;
+        color: var(--text-primary);
+    }
+
+    .cert-meta {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Keyframes */
+    @keyframes pulse-glow {
+        0% { transform: scale(1); opacity: 0.12; }
+        100% { transform: scale(1.15); opacity: 0.20; }
+    }
+
+    @keyframes morph-shape {
+        0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+        50% { border-radius: 65% 35% 55% 45% / 40% 55% 45% 60%; }
+        100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .hero {
+            padding-top: 8rem;
+            min-height: auto;
+        }
+        .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            text-align: center;
+        }
+        .hero-intro {
+            justify-content: center;
+        }
+        .hero-intro::after {
+            display: none;
+        }
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        .hero-description {
+            margin: 0 auto 2rem auto;
+        }
+        .hero-actions {
+            justify-content: center;
+        }
+    }
+</style>
+
+</head>
+<body>
+
+    <!-- Header Glass Navbar -->
+    <header id="header">
+        <div class="container navbar-content">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-code"></i> Naufal Maul…
+            </a>
+            
+            <nav>
+                <ul class="nav-links" id="nav-links">
+                    <li>
+                        <a href="index.html" class="active">
+                            Beranda
+                        </a>
+                    </li>
+                    <li>
+                        <a href="about.html" class="">
+                            Tentang Saya
+                        </a>
+                    </li>
+                    <li>
+                        <a href="projects.html" class="">
+                            Project
+                        </a>
+                    </li>
+                    
+                    <!-- Dynamic view settings if logged in as admin to enter panel -->
+                    
+                </ul>
+            </nav>
+            
+            <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Injection -->
+    <main>
+        
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-content">
+            <div class="hero-intro">Hello World, saya</div>
+            <h1 class="hero-title">
+                <span>Naufal Maulana Hasan</span>
+            </h1>
+            <div class="hero-subtitle" id="typed-subtitle"></div>
+            
+            <p class="hero-description">
+                DevOps Specialist &amp; Cloud Engineer dengan hasrat tinggi dalam otomatisasi infrastruktur, orkestrasi cloud, dan keamanan jaringan.
+            </p>
+            
+            <div class="hero-actions">
+                <a href="projects.html" class="btn-cta" style="padding: 0.8rem 2rem; font-size: 1rem">
+                    <i class="fa-regular fa-folder-open" style="margin-right:0.5rem"></i> Lihat Project
+                </a>
+                
+                
+                    <a href="media/cv/CV_Naufal_Maulana_Hasan.pdf" class="btn-outline" download style="padding: 0.8rem 2rem; font-size: 1rem">
+                        <i class="fa-solid fa-download"></i> Unduh CV (PDF)
+                    </a>
+                
+            </div>
+        </div>
+
+        <div class="hero-image-wrapper">
+            <div class="hero-image-glow"></div>
+            <div class="hero-avatar-frame">
+                
+                    <img src="media/profile/IMG_20220712_212028.jpg" alt="Avatar" class="hero-avatar">
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED PROJECTS SECTION -->
+<section style="background: rgba(255, 255, 255, 0.01); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color)">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Portofolio</span>
+            <h2 class="section-title">Project Unggulan</h2>
+            <p class="section-subtitle">Berikut adalah beberapa project terbaik yang baru-baru ini saya selesaikan dengan arsitektur modern.</p>
+        </div>
+        
+        <div class="featured-grid">
+            
+                
+                    <div class="glass-card project-card">
+                        <div class="project-img-container">
+                            
+                                <img src="media/projects/k8s_monitoring.jpg" alt="Kubernetes Monitoring with Prometheus &amp; Grafana" class="project-img">
+                            
+                            <div class="project-overlay">
+                                <a href="projects/2.html" class="btn-cta">
+                                    Detail Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-body">
+                            <span class="project-cat">DevOps &amp; Cloud</span>
+                            <h3 class="project-title">Kubernetes Monitoring with Prometheus &amp; Grafana</h3>
+                            <p class="project-desc">Implementasi monitoring klaster Kubernetes (v1.28.15) menggunakan Prometheus dan Grafana. Klaster 3 VM Ubuntu (master + worker + monitoring). DaemonSet Node …</p>
+                            
+                            <div class="project-tech">
+                                
+                                    <span class="badge-tech">Kubernetes</span>
+                                
+                                    <span class="badge-tech">Kubeadm</span>
+                                
+                                    <span class="badge-tech">Prometheus</span>
+                                
+                                    <span class="badge-tech">Grafana</span>
+                                
+                                    <span class="badge-tech">Node Exporter</span>
+                                
+                                    <span class="badge-tech">Kube State Metrics</span>
+                                
+                                    <span class="badge-tech">MetalLB</span>
+                                
+                                    <span class="badge-tech">Alertmanager</span>
+                                
+                                    <span class="badge-tech">Flannel CNI</span>
+                                
+                            </div>
+                            
+                            <div class="project-links">
+                                
+                                    <a href="https://drive.google.com/file/d/18026afXeED7nWnSkVoyA5_2yU3_lQJmO/view?usp=sharing" target="_blank" class="project-link-btn">
+                                        <i class="fa-brands fa-github"></i> Repository
+                                    </a>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="glass-card project-card">
+                        <div class="project-img-container">
+                            
+                                <img src="media/projects/smart_parking.jpg" alt="Smart Parking IoT System" class="project-img">
+                            
+                            <div class="project-overlay">
+                                <a href="projects/1.html" class="btn-cta">
+                                    Detail Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-body">
+                            <span class="project-cat">Internet of Things</span>
+                            <h3 class="project-title">Smart Parking IoT System</h3>
+                            <p class="project-desc">Proyek Smart Parking IoT untuk mengatasi keterbatasan ruang parkir. Menggunakan NodeMCU ESP32 + sensor ultrasonik HC-SR04, LED indikator, dan buzzer …</p>
+                            
+                            <div class="project-tech">
+                                
+                                    <span class="badge-tech">NodeMCU ESP32</span>
+                                
+                                    <span class="badge-tech">HC-SR04</span>
+                                
+                                    <span class="badge-tech">MQTT</span>
+                                
+                                    <span class="badge-tech">ThingsBoard</span>
+                                
+                                    <span class="badge-tech">Python</span>
+                                
+                                    <span class="badge-tech">Flask</span>
+                                
+                                    <span class="badge-tech">HTML/CSS/JS</span>
+                                
+                                    <span class="badge-tech">WireGuard</span>
+                                
+                            </div>
+                            
+                            <div class="project-links">
+                                
+                                    <a href="https://drive.google.com/file/d/1Llh3ZkrQ-h1pXVf7ynu_3q3tnSO-Yumj/view?usp=sharing" target="_blank" class="project-link-btn">
+                                        <i class="fa-brands fa-github"></i> Repository
+                                    </a>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="glass-card project-card">
+                        <div class="project-img-container">
+                            
+                                <img src="media/projects/smart_agriculture.jpeg" alt="Smart Agricultural Water Level Monitoring" class="project-img">
+                            
+                            <div class="project-overlay">
+                                <a href="projects/3.html" class="btn-cta">
+                                    Detail Project <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="project-body">
+                            <span class="project-cat">Internet of Things</span>
+                            <h3 class="project-title">Smart Agricultural Water Level Monitoring</h3>
+                            <p class="project-desc">Sistem mitigasi banjir sawah otomatis berbasis IoT untuk mencegah gagal panen akibat cuaca ekstrem. NodeMCU ESP8266 mengintegrasikan Water Level Sensor, …</p>
+                            
+                            <div class="project-tech">
+                                
+                                    <span class="badge-tech">NodeMCU ESP8266</span>
+                                
+                                    <span class="badge-tech">YL-83</span>
+                                
+                                    <span class="badge-tech">Water Level Sensor</span>
+                                
+                                    <span class="badge-tech">DHT11</span>
+                                
+                                    <span class="badge-tech">Blynk IoT Cloud</span>
+                                
+                                    <span class="badge-tech">Arduino IDE</span>
+                                
+                                    <span class="badge-tech">C++</span>
+                                
+                            </div>
+                            
+                            <div class="project-links">
+                                
+                                    <a href="https://drive.google.com/file/d/1gHjgELvbBAxdOM0H8ILrZVkia6AsovOp/view?usp=sharing" target="_blank" class="project-link-btn">
+                                        <i class="fa-brands fa-github"></i> Repository
+                                    </a>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                
+            
+        </div>
+        
+        <div style="text-align: center; margin-top: 4rem">
+            <a href="projects.html" class="btn-outline">
+                Lihat Semua Project <i class="fa-solid fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- CERTIFICATES SECTION -->
+<section>
+    <div class="container">
+        <div class="section-header">
+            <span class="section-tag">Kredensial</span>
+            <h2 class="section-title">Sertifikasi Profesional</h2>
+            <p class="section-subtitle">Sertifikat validasi kompetensi yang telah saya raih secara global.</p>
+        </div>
+        
+        <div class="certs-grid">
+            
+                
+                    <div class="glass-card cert-card">
+                        <div class="cert-img-container">
+                            
+                                <img src="media/certificates/cert_nde.jpg" alt="Network Defense Essentials (NDE)" class="cert-img">
+                            
+                        </div>
+                        <h3 class="cert-title">Network Defense Essentials (NDE)</h3>
+                        <div class="cert-meta">
+                            <span style="font-weight:600; color:var(--text-secondary)">EC-Council</span>
+                            <span>Mei 2025</span>
+                        </div>
+                        
+                    </div>
+                
+                    <div class="glass-card cert-card">
+                        <div class="cert-img-container">
+                            
+                                <img src="media/certificates/cert_2.jpg" alt="Kubernetes Cluster Administration" class="cert-img">
+                            
+                        </div>
+                        <h3 class="cert-title">Kubernetes Cluster Administration</h3>
+                        <div class="cert-meta">
+                            <span style="font-weight:600; color:var(--text-secondary)">Btech Academy (ADINUSA)</span>
+                            <span>Mar 2025</span>
+                        </div>
+                        
+                    </div>
+                
+                    <div class="glass-card cert-card">
+                        <div class="cert-img-container">
+                            
+                                <img src="media/certificates/cert_3.png" alt="Networking Essentials" class="cert-img">
+                            
+                        </div>
+                        <h3 class="cert-title">Networking Essentials</h3>
+                        <div class="cert-meta">
+                            <span style="font-weight:600; color:var(--text-secondary)">Cisco Networking Academy</span>
+                            <span>Nov 2023</span>
+                        </div>
+                        
+                    </div>
+                
+            
+        </div>
+    </div>
+</section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <a href="index.html" class="logo" style="margin-bottom:1rem; display:inline-block">
+                        <i class="fa-solid fa-code"></i> Naufal Maulana Hasan
+                    </a>
+                    <p class="footer-desc">
+                        DevOps Specialist &amp; Cloud Engineer dengan hasrat tinggi dalam otomatisasi infrastruktur, orkestrasi cloud, dan keamanan jaringan.
+                    </p>
+                    <div class="footer-socials">
+                        
+                            <a href="https://github.com/naufalln85" target="_blank"><i class="fa-brands fa-github"></i></a>
+                        
+                        
+                            <a href="https://www.linkedin.com/in/naufal-maulana-hasan-7959a8305/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                        
+                        
+                            <a href="mailto:naufalmaulanahasan@gmail.com"><i class="fa-regular fa-envelope"></i></a>
+                        
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Tautan</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Beranda</a></li>
+                        <li><a href="about.html">Tentang Saya</a></li>
+                        <li><a href="projects.html">Daftar Project</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="footer-title">Kontak</h3>
+                    <ul class="footer-links" style="color: var(--text-muted)">
+                        
+                            <li><i class="fa-regular fa-envelope" style="margin-right:0.5rem; color:var(--primary)"></i> naufalmaulanahasan@gmail.com</li>
+                        
+                        <li><i class="fa-solid fa-location-dot" style="margin-right:0.5rem; color:var(--primary)"></i> Indonesia</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 Naufal Maulana Hasan. All rights reserved.</p>
+                <p>
+                    
+                        Terakhir dipublikasi: 22 May 2026 19:00
+                    
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header shadow animation on scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile responsive menu toggle
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navLinks = document.getElementById('nav-links');
+        
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            if (navLinks.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        });
+    </script>
+    
+<script>
+    // Premium Typewriter script for Hero Subtitle
+    const titleText = "DevOps Specialist &amp; Cloud Engineer";
+    const subtitleEl = document.getElementById('typed-subtitle');
+    let index = 0;
+    
+    function typeEffect() {
+        if (index < titleText.length) {
+            subtitleEl.innerHTML += titleText.charAt(index);
+            index++;
+            setTimeout(typeEffect, 75);
+        } else {
+            // Add elegant custom cursor pulsation
+            subtitleEl.innerHTML += '<span style="color:var(--primary); animation: blink 1s infinite">|</span>';
+        }
+    }
+    
+    // Keyframe blinking cursor injected dynamically
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes blink {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Trigger animation slightly after DOM load
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(typeEffect, 500);
+    });
+</script>
+
+</body>
+</html>
