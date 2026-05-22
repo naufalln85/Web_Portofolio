@@ -21,10 +21,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy source code
 COPY . .
 
-# Collect static files (settings.py will be built to handle default/dummy environment variables during build)
-RUN python manage.py collectstatic --noinput
+# Make entrypoint executable
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 
-# Run the app with gunicorn
-CMD ["gunicorn", "portfolio_project.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2"]
+# Use entrypoint script (handles migrations, seed, collectstatic, then gunicorn)
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -35,10 +35,10 @@ class Command(BaseCommand):
             ('profile.jpg', os.path.join(profile_media_dir, 'avatar.jpg')),
             ('smart_parking.jpg', os.path.join(projects_media_dir, 'smart_parking.jpg')),
             ('k8s_monitoring.jpg', os.path.join(projects_media_dir, 'k8s_monitoring.jpg')),
-            ('smart_agriculture.jpg', os.path.join(projects_media_dir, 'smart_agriculture.jpg')),
+            ('smart_agriculture.jpeg', os.path.join(projects_media_dir, 'smart_agriculture.jpeg')),
             ('cert_nde.jpg', os.path.join(certs_media_dir, 'cert_nde.jpg')),
             ('cert_2.jpg', os.path.join(certs_media_dir, 'cert_2.jpg')),
-            ('cert_3.jpg', os.path.join(certs_media_dir, 'cert_3.jpg')),
+            ('cert_3.png', os.path.join(certs_media_dir, 'cert_3.png')),
         ]
 
         for src_name, dest_path in image_mappings:
@@ -183,7 +183,7 @@ class Command(BaseCommand):
                 '(Hijau = Aman, Kuning = Waspada Hujan, Merah = Bahaya Banjir).'
             ),
             tech_stack='NodeMCU ESP8266, YL-83, Water Level Sensor, DHT11, Blynk IoT Cloud, Arduino IDE, C++',
-            thumbnail='projects/smart_agriculture.jpg',
+            thumbnail='projects/smart_agriculture.jpeg',
             repo_url='https://github.com/naufalln85/smart-agricultural-water-level',
             order=3,
             is_featured=True,
@@ -210,7 +210,7 @@ class Command(BaseCommand):
             title='Networking Essentials',
             issuer='Cisco Networking Academy',
             date_issued=date(2023, 11, 27),
-            image='certificates/cert_3.jpg',
+            image='certificates/cert_3.png',
         )
 
         # =====================================================================
