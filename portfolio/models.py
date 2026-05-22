@@ -19,6 +19,8 @@ class Profile(models.Model):
 class Project(models.Model):
     CATEGORY = [
         ('web',    'Web Application'),
+        ('iot',    'Internet of Things'),
+        ('devops', 'DevOps & Cloud'),
         ('mobile', 'Mobile App'),
         ('brand',  'Brand Identity'),
         ('data',   'Data Science'),
@@ -63,8 +65,9 @@ class Skill(models.Model):
     CATEGORY = [
         ('frontend', 'Frontend'),
         ('backend',  'Backend'),
-        ('tool',     'Tools & DevOps'),
-        ('design',   'UI/UX Design'),
+        ('devops',   'DevOps & Tools'),
+        ('cloud',    'Cloud Computing'),
+        ('network',  'Networking'),
     ]
     name        = models.CharField(max_length=100)
     category    = models.CharField(max_length=20, choices=CATEGORY)

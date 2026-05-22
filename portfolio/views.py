@@ -1,5 +1,5 @@
 import threading
-from django.shortcuts import render, redirect, get_object_or_400
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.management import call_command
 from django.contrib import messages
@@ -60,7 +60,7 @@ def projects(request):
 
 def project_detail(request, pk):
     profile = Profile.objects.first()
-    project = get_object_or_400(Project, pk=pk)
+    project = get_object_or_404(Project, pk=pk)
     
     # Recommendation: other projects
     other_projects = Project.objects.exclude(pk=pk).order_by('?')[:3]

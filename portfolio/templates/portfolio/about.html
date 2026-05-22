@@ -305,35 +305,27 @@
         </div>
         
         <div class="skills-grid">
-            <!-- Frontend Card -->
-            <div class="glass-card skill-cat-card">
-                <h3 class="skill-cat-title"><i class="fa-solid fa-laptop-code"></i> Frontend</h3>
-                <div class="skill-list">
-                    {% for skill in skills %}
-                        {% if skill.category == 'frontend' %}
-                            <div>
-                                <div class="skill-item-header">
-                                    <span class="skill-name">
-                                        {% if skill.icon_class %}<i class="{{ skill.icon_class }}"></i>{% else %}<i class="fa-solid fa-layer-group"></i>{% endif %}
-                                        {{ skill.name }}
-                                    </span>
-                                    <span style="color:var(--primary); font-weight:600">{{ skill.proficiency }}%</span>
-                                </div>
-                                <div class="skill-bar-container">
-                                    <div class="skill-bar" data-width="{{ skill.proficiency }}%"></div>
-                                </div>
-                            </div>
+            {% regroup skills by get_category_display as skill_categories %}
+            {% for category in skill_categories %}
+                <div class="glass-card skill-cat-card">
+                    <h3 class="skill-cat-title">
+                        {% if category.grouper == 'Frontend' %}
+                            <i class="fa-solid fa-laptop-code"></i>
+                        {% elif category.grouper == 'Backend' %}
+                            <i class="fa-solid fa-server"></i>
+                        {% elif category.grouper == 'DevOps & Tools' or category.grouper == 'Tools & DevOps' or category.grouper == 'DevOps' %}
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        {% elif category.grouper == 'Cloud Computing' or category.grouper == 'Cloud' %}
+                            <i class="fa-solid fa-cloud"></i>
+                        {% elif category.grouper == 'Networking' %}
+                            <i class="fa-solid fa-network-wired"></i>
+                        {% else %}
+                            <i class="fa-solid fa-gears"></i>
                         {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            
-            <!-- Backend Card -->
-            <div class="glass-card skill-cat-card">
-                <h3 class="skill-cat-title"><i class="fa-solid fa-server"></i> Backend</h3>
-                <div class="skill-list">
-                    {% for skill in skills %}
-                        {% if skill.category == 'backend' %}
+                        {{ category.grouper }}
+                    </h3>
+                    <div class="skill-list">
+                        {% for skill in category.list %}
                             <div>
                                 <div class="skill-item-header">
                                     <span class="skill-name">
@@ -346,33 +338,10 @@
                                     <div class="skill-bar" data-width="{{ skill.proficiency }}%"></div>
                                 </div>
                             </div>
-                        {% endif %}
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Tools & DevOps Card -->
-            <div class="glass-card skill-cat-card">
-                <h3 class="skill-cat-title"><i class="fa-solid fa-screwdriver-wrench"></i> DevOps & Tools</h3>
-                <div class="skill-list">
-                    {% for skill in skills %}
-                        {% if skill.category == 'tool' %}
-                            <div>
-                                <div class="skill-item-header">
-                                    <span class="skill-name">
-                                        {% if skill.icon_class %}<i class="{{ skill.icon_class }}"></i>{% else %}<i class="fa-solid fa-terminal"></i>{% endif %}
-                                        {{ skill.name }}
-                                    </span>
-                                    <span style="color:var(--primary); font-weight:600">{{ skill.proficiency }}%</span>
-                                </div>
-                                <div class="skill-bar-container">
-                                    <div class="skill-bar" data-width="{{ skill.proficiency }}%"></div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 
